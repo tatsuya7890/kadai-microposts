@@ -4,4 +4,8 @@ Rails.application.routes.draw do
   #トップページへのルーティング
   root to: 'toppages#index'
   
+  #users/signupでも users/newでもnewページが表示される
+  get 'signup', to: 'users#new'
+  resources :users, only: [:index, :show, :new, :create]
+  
 end
