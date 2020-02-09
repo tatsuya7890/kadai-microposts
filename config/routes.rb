@@ -15,4 +15,7 @@ Rails.application.routes.draw do
   #ベーシック7セットのうち4つを使用するルーティング
   resources :users, only: [:index, :show, :new, :create]
   
+  #新規投稿と削除
+  resources :microposts, only: [:create, :destroy]
+
 end
