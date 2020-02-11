@@ -33,4 +33,10 @@ class User < ApplicationRecord
     #other_user が含まれていないかを確認。含まれている場合には、true を返し、含まれていない場合には、false を返す
     self.followings.include?(other_user)
   end
+  
+  #タイムライン用(Micropost.where(user_id:フォローユーザ＋自分自身)) ..._idsはhas_many ...によって自動的に生成されるメソッド
+  def feed_microposts
+    Micropost.where(user_id: self.following_ids + [self.id])
+  end
+  
 end

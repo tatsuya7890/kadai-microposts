@@ -42,14 +42,12 @@ class UsersController < ApplicationController
     @followers = @user.followers.page(params[:page])
     counts(@user)
   end
-  
-  
-  
+
 
   private
   
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
-  
+ 
 end
