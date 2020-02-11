@@ -13,9 +13,21 @@ Rails.application.routes.draw do
   get 'signup', to: 'users#new'
   
   #ベーシック7セットのうち4つを使用するルーティング
-  resources :users, only: [:index, :show, :new, :create]
+  resources :users, only: [:index, :show, :new, :create] do
+    #フォロー中のユーザとフォローされているユーザ一覧表示
+    member do
+      get :followings
+      get :followers
+    end
+    #collection do
+    #  get :search
+    #end
+  end
+  
   
   #新規投稿と削除
   resources :microposts, only: [:create, :destroy]
+  #新規フォローとアンフォロー
+  resources :relationships, only: [:create, :destroy]
 
 end

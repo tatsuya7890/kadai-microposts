@@ -8,7 +8,29 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   has_secure_password
   
-  #1対多
+  #1対多の関係
   has_many :microposts
+  #多対他の関係
+  has_many :relationships
+  has_many :followings, through: :relationships, source: :follow
+  has_many :reverses_of_relationship, class_name: 'Relationship', foreign_key: 'follow_id'
+  has_many :followers, through: :reverses_of_relationship, source: :user
   
+  def follow(other_user)
+    unless self == other_user
+      #見つかれば Relationshipモデル（クラス）のインスタンスを返す、見つからなければフォロー関係を保存(create = build + save)
+      self.relationships.find_or_create_by(follow_id: other_user.id)
+    end
+  end
+  
+  def unfollow(other_user)
+    relationship = self.relationships.find_by(follow_id: other_user.id)
+    #relationship が存在すれば destroy します
+    relationship.destroy if relationship
+  end
+  
+  def following?(other_user)
+    #other_user が含まれていないかを確認。含まれている場合には、true を返し、含まれていない場合には、false を返す
+    self.followings.include?(other_user)
+  end
 end
