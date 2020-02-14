@@ -1,0 +1,19 @@
+<% if @favorites.any? %>
+  <ul class="list-unstyled">
+    <% @favorites.each do |favorite| %>
+      <li class="media">
+        <img class="mr-2 rounded" src="<%= gravatar_url(favorite.user, { size: 50 }) %>" alt="">
+        <div class="media-body">
+          <div>
+            <%= favorite.content %>
+              <%= form_with(model: current_user.favorites.find_by(micropost_id: favorite.id), local: true, method: :delete) do |f| %>
+                <%= hidden_field_tag :micropost_id, favorite.id %>
+                <%= f.submit 'お気に入り解除', class: 'btn btn-danger' %>
+              <% end %>
+              
+        </div>
+      </li>
+    <% end %>
+  </ul>
+  <%= paginate @favorites %>
+<% end %>

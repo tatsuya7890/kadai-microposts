@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     member do
       get :followings
       get :followers
+      get :likes
+      get :is_liked
     end
     #collection do
     #  get :search
@@ -25,9 +27,11 @@ Rails.application.routes.draw do
   end
   
   
-  #新規投稿と削除
+  #新規micropost投稿と削除
   resources :microposts, only: [:create, :destroy]
   #新規フォローとアンフォロー
   resources :relationships, only: [:create, :destroy]
-
+  #新規お気に入り登録・解除
+  resources :favorites, only: [:create, :destroy]
+  
 end

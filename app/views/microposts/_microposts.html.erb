@@ -10,8 +10,22 @@
           <p class="mb-0"><%= micropost.content %></p>
         </div>
         <div>
+          <!-- 現在のユーザがmicropost投稿したユーザと同じ場合-->
           <% if current_user == micropost.user %>
+            <!-- 削除ボタンを付ける。-->
             <%= link_to "Delete", micropost, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-sm' %>
+          <% else %>
+            <% if current_user.favorite?(micropost) %>
+              <%= form_with(model: current_user.favorites.find_by(micropost_id: micropost.id), local: true, method: :delete) do |f| %>
+                <%= hidden_field_tag :micropost_id, micropost.id %>
+                <%= f.submit 'お気に入り解除', class: 'btn btn-danger' %>
+              <% end %>
+            <% else %>
+              <%= form_with(model: current_user.favorites.build, local: true) do |f| %>
+                <%= hidden_field_tag :micropost_id, micropost.id %>
+                <%= f.submit 'お気に入り登録', class: 'btn btn-primary' %>
+              <% end %>
+            <% end %>
           <% end %>
         </div>
       </div>
